@@ -1,6 +1,6 @@
 import { Elysia } from "elysia";
 import mongoose from "mongoose";
-import { PORT, MONGO_URI } from "../config/env";
+import { PORT, MONGO_URI } from "./config/env";
 
 const app = new Elysia();
 
