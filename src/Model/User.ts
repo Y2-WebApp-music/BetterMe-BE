@@ -1,6 +1,6 @@
 import { ObjectId, Schema, model } from "mongoose";
 
-interface User {
+export interface User {
     firebase_uid: string,
     birth_date: Date,
     gender: number, // 1: Male, 2: Female

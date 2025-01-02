@@ -1,6 +1,6 @@
 import { ObjectId, Schema, model } from "mongoose";
 
-interface Task {
+export interface Task {
     task_name: string;
     status: number; // 0: Unchecked, 1: Checked
 }

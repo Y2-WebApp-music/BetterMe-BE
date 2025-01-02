@@ -1,6 +1,6 @@
 import { ObjectId, Schema, model } from "mongoose";
 
-interface Meal {
+export interface Meal {
     user_id: ObjectId;
     meal_date: Date;
     food_name: string;

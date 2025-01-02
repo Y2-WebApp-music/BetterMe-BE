@@ -1,6 +1,6 @@
 import { ObjectId, Schema, model } from "mongoose";
 
-interface Goal {
+export interface Goal {
     goal_name: string;
     description: string;
     start_date: Date;
