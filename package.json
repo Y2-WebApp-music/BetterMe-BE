@@ -6,8 +6,10 @@
     "dev": "bun run --watch src/server.ts"
   },
   "dependencies": {
+    "@elysiajs/cookie": "^0.8.0",
     "@elysiajs/cors": "^1.2.0",
     "@elysiajs/jwt": "^1.2.0",
+    "@elysiajs/swagger": "^1.2.0",
     "bcrypt": "^5.1.1",
     "elysia": "latest",
     "mongoose": "^8.9.2"

@@ -1,6 +1,7 @@
 import { Elysia } from "elysia";
 import mongoose from "mongoose";
 import { PORT, MONGO_URI } from "./config/env";
+import { cors } from '@elysiajs/cors'
 import userRoute from "./Routes/userRoute";
 
 const app = new Elysia();

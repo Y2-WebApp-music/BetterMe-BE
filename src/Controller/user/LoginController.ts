@@ -12,6 +12,6 @@ export const login = async ({ body }: { body: User }) => {
             user,
         };
     } catch (error) {
-        console.log(error); 
+        console.log(error);
     }
 };
