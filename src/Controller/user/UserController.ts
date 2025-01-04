@@ -1,10 +1,10 @@
 import { UserModel } from "../../Model/User";
 
 // home screen
-export const getUserById = async ({ params }: { params: { id: string }}) => {
+export const getUserById = async ({ params }: { params: { uid: string }}) => {
     try {
-        const { id } = params;
-        const user = await UserModel.findOne({ firebase_uid: id });
+        const { uid } = params;
+        const user = await UserModel.findOne({ firebase_uid: uid });
         if (!user) {
             return { message: "User not found" };
         }

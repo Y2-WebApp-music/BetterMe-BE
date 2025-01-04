@@ -3,9 +3,9 @@ export const BMR_calculate = (birth_date: Date, gender: number, weight: number, 
     const age = new Date().getFullYear() - new Date(birth_date).getFullYear();
     
     if (gender === 1) {
-        var bmr = 10 * weight + 6.25 * height - 5 * age - 161;
-    } else {
         var bmr = 10 * weight + 6.25 * height - 5 * age + 5;
+    } else {
+        var bmr = 10 * weight + 6.25 * height - 5 * age - 161;
     }
 
     switch (activity) {

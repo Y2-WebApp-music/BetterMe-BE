@@ -8,7 +8,7 @@ export interface Goal {
     create_by: string; // firebase_uid
     tasks: {
         task_name: string;
-        status: number;
+        status: number; // 0: incomplete, 1: complete
     }[];
     public_goal: boolean;
 }
@@ -31,16 +31,13 @@ const GoalSchema = new Schema<Goal>({
         type: String,
         ref: 'User',
     },
-    tasks: [{
-        task_name: {
-            type: String,
-            required: true,
-        },
-        status: {
-            type: Number,
-            default: 0,
-        },
-    }],
+    tasks: {
+        type: [{
+            task_name: String,
+            status: Number,
+        }],
+        required: true,
+    },
     public_goal: {
         type: Boolean,
         default: false,

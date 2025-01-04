@@ -7,7 +7,7 @@ const router = new Elysia().group("/user", (app) =>
     app
         .post("/register", register)
         .post("/login", login)
-        .get("/:id", getUserById)
+        .get("/:uid", getUserById)
 );
 
 export default router;
