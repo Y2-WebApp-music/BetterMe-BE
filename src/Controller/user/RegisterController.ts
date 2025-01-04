@@ -11,6 +11,11 @@ export const register = async ({ body }: { body: User }) => {
             activity,
         } = body;
 
+        const findUser = await UserModel.findOne({ firebase_uid });
+        if (findUser) {
+            return { message: "User already exists" };
+        }
+
         const age = new Date().getFullYear() - new Date(birth_date).getFullYear();
         var bmr = 10 * weight + 6.25 * height - 5 * age - 161;
 
