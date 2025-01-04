@@ -18,9 +18,18 @@ const UserSchema = new Schema<User>({
         unique: true,
     },
     birth_date: Date,
-    gender: Number,
-    weight: Number,
-    height: Number,
+    gender: {
+        type: Number,
+        required: true,
+    },
+    weight: {
+        type: Number,
+        required: true,
+    },
+    height: {
+        type: Number,
+        required: true,
+    },
     activity: Number,
     calorie_need: Number,
     follower: [{
