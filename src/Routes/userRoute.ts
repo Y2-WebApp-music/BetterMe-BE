@@ -1,14 +1,13 @@
 import { Elysia } from "elysia";
 import { register } from "../Controller/user/RegisterController";
 import { login } from "../Controller/user/LoginController";
-import { getAllUser, getUserById } from "../Controller/user/UserController";
+import { getUserById } from "../Controller/user/UserController";
 
-const router = new Elysia().group("/user", (app) => 
+const router = new Elysia().group("/user", (app) =>
     app
-    .post("/register", register)
-    .post("/login", login)
-    .get("/", getAllUser)
-    .get("/:id", getUserById)
+        .post("/register", register)
+        .post("/login", login)
+        .get("/:id", getUserById)
 );
 
 export default router;

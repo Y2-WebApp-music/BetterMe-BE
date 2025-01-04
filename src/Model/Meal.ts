@@ -19,19 +19,11 @@ const MealSchema = new Schema<Meal>({
     },
     meal_date: {
         type: Date,
-        required: true,
+        default: Date.now,
     },
-    food_name: {
-        type: String,
-        required: true,
-    },
-    portion: {
-        type: String,
-    },
-    image: {
-        type: String,
-        required: true,
-    },
+    food_name: String,
+    portion: String,
+    image: String,
 });
 
 export const MealModel = model<Meal>("Meal", MealSchema);

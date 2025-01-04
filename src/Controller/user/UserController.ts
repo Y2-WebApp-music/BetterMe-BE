@@ -1,13 +1,4 @@
-import { User, UserModel } from "../../Model/User";
-
-export const getAllUser = async () => {
-    try {
-        const users = await UserModel.find();
-        return users;
-    } catch (error) {
-        console.log(error);
-    }
-};
+import { UserModel } from "../../Model/User";
 
 // home screen
 export const getUserById = async ({ params }: { params: { id: string }}) => {

@@ -15,31 +15,14 @@ export interface User {
 const UserSchema = new Schema<User>({
     firebase_uid: {
         type: String,
-        required: true,
         unique: true,
     },
-    birth_date: {
-        type: Date,
-    },
-    gender: {
-        type: Number,
-        required: true,
-    },
-    weight: {
-        type: Number,
-        required: true,
-    },
-    height: {
-        type: Number,
-        required: true,
-    },
-    activity: {
-        type: Number,
-        required: true,
-    },
-    calorie_need: {
-        type: Number,
-    },
+    birth_date: Date,
+    gender: Number,
+    weight: Number,
+    height: Number,
+    activity: Number,
+    calorie_need: Number,
     follower: [{
         type: Schema.Types.ObjectId,
         ref: 'User',

@@ -5,8 +5,12 @@ export interface Goal {
     description: string;
     start_date: Date;
     end_date: Date;
-    create_by: ObjectId;
-    task_id: ObjectId[];
+    create_by: string; // firebase_uid
+    tasks: {
+        task_name: string;
+        status: number;
+    }[];
+    public_goal: boolean;
 }
 
 const GoalSchema = new Schema<Goal>({
@@ -14,9 +18,7 @@ const GoalSchema = new Schema<Goal>({
         type: String,
         required: true,
     },
-    description: {
-        type: String,
-    },
+    description: String,
     start_date: {
         type: Date,
         required: true,
@@ -26,13 +28,23 @@ const GoalSchema = new Schema<Goal>({
         required: true,
     },
     create_by: {
-        type: Schema.Types.ObjectId,
+        type: String,
         ref: 'User',
     },
-    task_id: [{
-        type: Schema.Types.ObjectId,
-        ref: 'Task',
+    tasks: [{
+        task_name: {
+            type: String,
+            required: true,
+        },
+        status: {
+            type: Number,
+            default: 0,
+        },
     }],
+    public_goal: {
+        type: Boolean,
+        default: false,
+    },
 });
 
 export const GoalModel = model<Goal>('Goal', GoalSchema);
