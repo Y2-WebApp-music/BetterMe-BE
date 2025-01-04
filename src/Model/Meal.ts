@@ -1,7 +1,7 @@
 import { ObjectId, Schema, model } from "mongoose";
 
 export interface Meal {
-    user_id: ObjectId;
+    user_uid: string;
     meal_date: Date;
     food_name: string;
     portion: string;
@@ -13,8 +13,8 @@ export interface Meal {
 }
 
 const MealSchema = new Schema<Meal>({
-    user_id: {
-        type: Schema.Types.ObjectId,
+    user_uid: {
+        type: String,
         ref: "User",
     },
     meal_date: {
