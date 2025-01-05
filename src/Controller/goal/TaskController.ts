@@ -28,7 +28,8 @@ export const updateTaskStatus = async (
 
         return {
             message: "Update task success",
-            goal,
+            goal: goal.goal_name,
+            task: goal.tasks[task_index],
         };
     } catch (error) {
         console.log(error);
