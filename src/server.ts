@@ -1,19 +1,17 @@
 import { Elysia } from "elysia";
 import mongoose from "mongoose";
-import { PORT, MONGO_URI } from "./config/env";
 import { cors } from '@elysiajs/cors'
 import userRoute from "./Routes/userRoute";
 import goalRoute from "./Routes/goalRoute";
 
-const app = new Elysia();
-app.get("/", () => "Hello Elysia");
+const PORT = Number(process.env.PORT) || 3000;
+const MONGO_URI = String(process.env.MONGO_URI);
 
-app.use(cors({
-  origin: "localhost:8081",
-  methods: ['GET', 'POST', 'PUT', 'DELETE'],
-  credentials: true,
-}));
+const app = new Elysia()
+  .get("/", () => "Hello Elysia")
+  .use(cors())
 
+// API routes
 app.use(userRoute);
 app.use(goalRoute);
 
