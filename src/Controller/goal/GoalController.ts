@@ -36,7 +36,7 @@ export const createGoal = async ({ body }: { body: Goal }) => {
     }
 };
 
-export const getTodayGoal = async ({ params }: { params: { uid: string }}) => {
+export const getTodayGoal = async ({ params }: { params: { uid: string } }) => {
     try {
         const { uid } = params;
         const findGoal = await GoalModel.find({ create_by: uid });
