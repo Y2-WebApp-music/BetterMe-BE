@@ -30,6 +30,7 @@ const GoalSchema = new Schema<Goal>({
     create_by: {
         type: String,
         ref: 'User',
+        default: "System",
     },
     tasks: {
         type: [{

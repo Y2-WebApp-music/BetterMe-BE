@@ -26,7 +26,7 @@ export const createGoal = async ({ body }: { body: Goal }) => {
             description,
             start_date: new Date(start_date),
             end_date: new Date(end_date),
-            create_by,
+            create_by: create_by || "System",
             tasks: taskStatus,
             public_goal: public_goal || false,
         });
