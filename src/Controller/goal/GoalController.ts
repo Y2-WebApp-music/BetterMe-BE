@@ -44,13 +44,13 @@ export const createGoal = async ({ body }: { body: Goal }) => {
 export const getTodayGoal = async ({ params }: { params: { uid: string } }) => {
     try {
         const { uid } = params;
-        const findGoal = await GoalModel.find({ create_by: uid });
-        if (!findGoal) {
+        const goals = await GoalModel.find({ create_by: uid });
+        if (!goals) {
             return { message: "Goal not found" };
         }
 
         const today = new Date();
-        const todayGoals = findGoal.filter(goal => {
+        const todayGoals = goals.filter(goal => {
             const startDate = new Date(goal.start_date);
             const endDate = new Date(goal.end_date);
             return today >= startDate && today <= endDate;
@@ -80,9 +80,9 @@ export const getTodayGoal = async ({ params }: { params: { uid: string } }) => {
 };
 
 export const updatePublicGoal = async (
-    { params, body }: { 
+    { params, body }: {
         params: { goal_id: string },
-        body: { public_goal: boolean } 
+        body: { public_goal: boolean }
     }
 ) => {
     try {
@@ -100,7 +100,7 @@ export const updatePublicGoal = async (
             public_goal: goal.public_goal,
         };
     } catch (error) {
-        console.log(error);   
+        console.log(error);
     }
 };
 
@@ -108,6 +108,28 @@ export const getAllGoal = () => {
     try {
         const goals = GoalModel.find({});
         return goals;
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const getCompleteGoal = async ({ params }: { params: { uid: string } }) => {
+    try {
+        const { uid } = params;
+        const goals = await GoalModel.find({ create_by: uid });
+        if (!goals) {
+            return { message: "Goal not found" };
+        }
+
+        const completeGoals = goals.filter(goal => {
+            const completeTaskCount = goal.tasks.filter(task => task.status === 1).length;
+            return completeTaskCount === goal.tasks.length;
+        });
+        if (completeGoals.length === 0) {
+            return { message: "No completed goals" };
+        }
+
+        return completeGoals;
     } catch (error) {
         console.log(error);
     }
