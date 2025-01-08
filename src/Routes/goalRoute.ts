@@ -1,5 +1,5 @@
 import { Elysia } from "elysia";
-import { createGoal, getTodayGoal, updatePublicGoal, getAllGoal, getCompleteGoal } from '../Controller/goal/GoalController';
+import { createGoal, getTodayGoal, updatePublicGoal, getAllGoal, getCompleteGoal, getInProgressGoal } from '../Controller/goal/GoalController';
 import { updateTaskStatus } from '../Controller/goal/TaskController';
 
 const router = new Elysia().group("/goal", (app) =>
@@ -10,6 +10,7 @@ const router = new Elysia().group("/goal", (app) =>
         .put("/:goal_id/update-task", updateTaskStatus)
         .put("/:goal_id/public", updatePublicGoal)
         .get("/:uid/complete", getCompleteGoal)
+        .get("/:uid/in-progress", getInProgressGoal)
 );
 
 export default router;
