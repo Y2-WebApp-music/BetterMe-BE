@@ -103,3 +103,12 @@ export const updatePublicGoal = async (
         console.log(error);   
     }
 };
+
+export const getAllGoal = () => {
+    try {
+        const goals = GoalModel.find({});
+        return goals;
+    } catch (error) {
+        console.log(error);
+    }
+};
