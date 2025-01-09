@@ -1,9 +1,10 @@
+import { Elysia } from "elysia";
 import { GoalModel } from "../../Model/Goal";
 
-export const updateTaskStatus = async (
+export const updateTaskStatus = new Elysia().put("/:goal_id/task-status", async (
     { params, body }: {
         params: { goal_id: string },
-        body: { task_index: number, status: number }
+        body: { task_index: number, status: boolean }
     }
 ) => {
     try {
@@ -19,7 +20,7 @@ export const updateTaskStatus = async (
             return { message: "Task index out of range" };
         }
 
-        if (status !== 0 && status !== 1) {
+        if (status !== false && status !== true) {
             return { message: "Invalid status" };
         }
 
@@ -34,4 +35,4 @@ export const updateTaskStatus = async (
     } catch (error) {
         console.log(error);
     }
-};
+});

@@ -1,6 +1,6 @@
 import { Meal, MealModel } from "../../Model/Meal";
 
-export const addMeal = async ({ body }: { body: Meal }) => {
+export const addMealByAI = async ({ body }: { body: Meal }) => {
     try {
         const {
             user_uid,
@@ -34,6 +34,14 @@ export const addMeal = async ({ body }: { body: Meal }) => {
             message: "Add meal success",
             meal
         };
+    } catch (error) {
+        console.log(error);
+    }
+};
+
+export const addMealByUser = async ({ body }: { body: Meal }) => {
+    try {
+        
     } catch (error) {
         console.log(error);
     }

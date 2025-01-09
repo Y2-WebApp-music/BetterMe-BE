@@ -2,7 +2,7 @@ import { ObjectId, Schema, model } from "mongoose";
 
 export interface Task {
     task_name: string;
-    status: number; // 0: Unchecked, 1: Checked
+    status: boolean;
 }
 
 const TaskSchema = new Schema<Task>({
@@ -11,8 +11,9 @@ const TaskSchema = new Schema<Task>({
         required: true,
     },
     status: {
-        type: Number,
+        type: Boolean,
         required: true,
+        default: false
     },
 });
 
