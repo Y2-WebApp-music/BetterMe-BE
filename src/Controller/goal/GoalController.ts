@@ -156,3 +156,25 @@ export const getInProgressGoal = async ({ params }: { params: { uid: string } })
         console.log(error);
     }
 };
+
+export const getFailGoal = async ({ params }: { params: { uid: string } }) => {
+    try {
+        const { uid } = params;
+        const goals = await GoalModel.find({ create_by: uid });
+        if (!goals) {
+            return { message: "Goal not found" };
+        }
+
+        const failGoals = goals.filter(goal => {
+            const completeTaskCount = goal.tasks.filter(task => task.status === 1).length;
+            return (completeTaskCount < goal.tasks.length) && (new Date() > new Date(goal.end_date));
+        });
+        if (failGoals.length === 0) {
+            return { message: "No failed goals" };
+        }
+
+        return failGoals;
+    } catch (error) {
+        console.log(error);
+    }
+};
