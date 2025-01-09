@@ -82,7 +82,7 @@ export const getTodayGoal = app.get("/today/:id", async ({ params }) => {
 export const getGoalCreate = app.get("/create/:id", async ({ params }) => {
     try {
         const { id } = params;
-        const goal = await GoalModel.findById(id).populate('create_by', 'username');
+        const goal = await GoalModel.findById(id).populate('create_by', 'firebase_uid username');
         if (!goal) {
             return { message: "Goal not found" };
         }
@@ -110,7 +110,7 @@ export const getGoalCreate = app.get("/create/:id", async ({ params }) => {
 export const getGoalCard = app.get("/card/:id", async ({ params }) => {
     try {
         const { id } = params;
-        const goal = await GoalModel.findById(id).populate('create_by', 'username');
+        const goal = await GoalModel.findById(id).populate('create_by', 'firebase_uid username');
         if (!goal) {
             return { message: "Goal not found" };
         }
@@ -136,7 +136,7 @@ export const getGoalCard = app.get("/card/:id", async ({ params }) => {
 export const getGoalDetail = app.get("/detail/:id", async ({ params }) => {
     try {
         const { id } = params;
-        const goal = await GoalModel.findById(id).populate('create_by', 'username');
+        const goal = await GoalModel.findById(id).populate('create_by', 'firebase_uid username');
         if (!goal) {
             return { message: "Goal not found" };
         }
