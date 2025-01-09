@@ -4,7 +4,7 @@ import { cors } from '@elysiajs/cors'
 import userRoute from "./Routes/userRoute";
 import goalRoute from "./Routes/goalRoute";
 
-const PORT = Number(process.env.PORT) || 3000;
+const PORT = Number(process.env.PORT) || 8000;
 const MONGO_URI = String(process.env.MONGO_URI);
 
 const app = new Elysia()
