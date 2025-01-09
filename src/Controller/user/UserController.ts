@@ -1,9 +1,11 @@
+import { Elysia } from "elysia";
 import { UserModel } from "../../Model/User";
 
-// home screen
-export const getUserById = async ({ body }: { body: { uid: string } }) => {
+const app = new Elysia();
+
+export const getUserById = app.get("/profile/:uid", async ({ params }) => {
     try {
-        const { uid } = body;
+        const { uid } = params;
         const user = await UserModel.findOne({ firebase_uid: uid });
         if (!user) {
             return { message: "User not found" };
@@ -22,4 +24,4 @@ export const getUserById = async ({ body }: { body: { uid: string } }) => {
     } catch (error) {
         console.log(error);
     }
-};
+});
