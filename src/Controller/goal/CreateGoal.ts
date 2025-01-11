@@ -15,7 +15,6 @@ export const createGoal = app.post("/create", async ({ body, jwt, cookie: { toke
             description,
             start_date,
             end_date,
-            create_by,
             tasks,
             public_goal,
         } = body as Goal;
@@ -24,11 +23,11 @@ export const createGoal = app.post("/create", async ({ body, jwt, cookie: { toke
             return { message: "At least 1 task is required to create a goal" };
         }
 
-        // const validToken = await jwt.verify(token.value);
-        // if (!validToken) {
-        //     return { message: "Unauthorized / Invalid token" };
-        // }
-        // const user_id = validToken.user_id;
+        const validToken = await jwt.verify(token.value);
+        if (!validToken) {
+            return { message: "Invalid token" };
+        }
+        const user_id = validToken.user_id;
 
         const taskStatus = tasks.map(task => ({
             ...task,
@@ -40,7 +39,7 @@ export const createGoal = app.post("/create", async ({ body, jwt, cookie: { toke
             description,
             start_date: new Date(start_date),
             end_date: new Date(end_date),
-            create_by: create_by || null,
+            create_by: user_id || null,
             tasks: taskStatus,
             public_goal: public_goal || false,
         });

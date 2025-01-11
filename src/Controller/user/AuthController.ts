@@ -55,7 +55,7 @@ export const register = app.post("/register", async ({ body }: { body: User }) =
 
 
 
-export const login = app.post("/login", async ({ body, jwt, cookie: { token }, params }) => {
+export const login = app.post("/login", async ({ body, jwt, cookie: { token } }) => {
     try {
         const { firebase_uid } = body as { firebase_uid: string };
         const user = await UserModel.findOne({ firebase_uid });
@@ -64,14 +64,19 @@ export const login = app.post("/login", async ({ body, jwt, cookie: { token }, p
         }
 
         token.set({
-            value: await jwt.sign({ user_id: user._id.toString() }),
+            value: await jwt.sign({
+                user_id: user._id.toString(),
+                username: user.username,
+                email: user.email,
+                profile_img: user.profile_img
+            }),
             httpOnly: true,
         })
 
         return {
             message: "Login success",
-            user,
-            token: token.value
+            token: token.value,
+            user
         };
     } catch (error) {
         console.log(error);
