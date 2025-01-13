@@ -4,10 +4,11 @@ import { getUserById } from "../Controller/user/UserController";
 
 const router = new Elysia().group("/user", (app) =>
     app
-        .use(register) // post /user/register
-        .use(login) // post /user/login
-        .use(logout) // post /user/logout
-        .use(getUserById) // get /user/profile/:uid
+        .use(register) // POST /user/register
+        .use(login) // POST /user/login
+        .use(logout) // POST /user/logout
+        
+        .use(getUserById) // GET /user/profile/:uid
 );
 
 export default router;
