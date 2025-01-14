@@ -1,7 +1,7 @@
 import { Elysia } from "elysia";
 import { jwt } from "@elysiajs/jwt";
 import { User, UserModel } from "../../Model/User";
-import { BMR_calculate } from "../../utils/BMR";
+import BMR_calculate from "../../utils/BMR";
 
 const app = new Elysia().use(jwt({
     name: "jwt",

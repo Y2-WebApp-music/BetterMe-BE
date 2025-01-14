@@ -1,4 +1,4 @@
-export const BMR_calculate = (birth_date: Date, gender: number, weight: number, height: number, activity: number) => {
+const BMR_calculate = (birth_date: Date, gender: number, weight: number, height: number, activity: number) => {
 
     const age = new Date().getFullYear() - new Date(birth_date).getFullYear();
     
@@ -31,3 +31,5 @@ export const BMR_calculate = (birth_date: Date, gender: number, weight: number, 
 
     return bmr;
 };
+
+export default BMR_calculate;
