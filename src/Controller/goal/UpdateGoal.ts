@@ -1,6 +1,5 @@
 import { Elysia } from "elysia";
-import { Goal, GoalModel } from "../../Model/Goal";
-import { jwt } from '@elysiajs/jwt';
+import { GoalModel } from "../../Model/Goal";
 
 const app = new Elysia();
 

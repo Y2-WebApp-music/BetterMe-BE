@@ -1,13 +1,6 @@
-import { Elysia, t } from "elysia";
-import { Goal, GoalModel } from "../../Model/Goal";
+import { Elysia } from "elysia";
+import { GoalModel } from "../../Model/Goal";
 import { jwt } from '@elysiajs/jwt';
-import { User } from '../../Model/User';
-
-interface Body {
-    body: {
-        uid: string;
-    }
-}
 
 const app = new Elysia().use(jwt({
     name: "jwt",
@@ -16,9 +9,11 @@ const app = new Elysia().use(jwt({
 }));
 
 // display Card of goal in (tabs)/home/yourGoal
-export const getAllGoal = app.get("/all", async () => {
+// get all goal of user
+export const getUserGoal = app.get("/user/:id", async ({ params }) => {
     try {
-        const goals = await GoalModel.find({});
+        const { id } = params;
+        const goals = await GoalModel.find({ create_by: id });
 
         const goal_data = goals.map(goal => {
             const completeTaskCount = goal.tasks.filter(task => task.status === true).length;
@@ -30,7 +25,7 @@ export const getAllGoal = app.get("/all", async () => {
                 total_task: goal.tasks.length,
                 complete_task: completeTaskCount,
             };
-        })
+        });
 
         return goal_data;
     } catch (error) {
@@ -107,22 +102,24 @@ export const getGoalCreate = app.get("/create/:id", async ({ params }) => {
 
 
 // Goal Card in Create goal (tabs)/home/createGoal
-export const getGoalCard = app.get("/card/:id", async ({ params }) => {
+// get all goal in the database
+export const getAllGoal = app.get("/all", async () => {
     try {
-        const { id } = params;
-        const goal = await GoalModel.findById(id).populate('create_by', 'firebase_uid username');
+        const goal = await GoalModel.find({}).populate('create_by', 'firebase_uid username');
         if (!goal) {
             return { message: "Goal not found" };
         }
 
-        const goal_data = {
-            goal_id: goal._id.toString(),
-            goal_name: goal.goal_name,
-            start_date: goal.start_date,
-            end_date: goal.end_date,
-            create_by: goal.create_by,
-            total_task: goal.tasks.length
-        }
+        const goal_data = goal.map(goal => {
+            return {
+                goal_id: goal._id.toString(),
+                goal_name: goal.goal_name,
+                start_date: goal.start_date,
+                end_date: goal.end_date,
+                create_by: goal.create_by,
+                total_task: goal.tasks.length,
+            }
+        });
 
         return goal_data;
     } catch (error) {
@@ -141,7 +138,7 @@ export const getGoalDetail = app.get("/detail/:id", async ({ params }) => {
             return { message: "Goal not found" };
         }
 
-        const completeTaskCount = goal.tasks.filter(task => task.status === true).length;  
+        const completeTaskCount = goal.tasks.filter(task => task.status === true).length;
         const goal_data = {
             goal_id: goal._id.toString(),
             goal_name: goal.goal_name,

@@ -1,10 +1,10 @@
 import { Elysia, t } from "elysia";
 import { createGoal } from '../Controller/goal/CreateGoal';
 import {
-    getAllGoal,
+    getUserGoal,
     getTodayGoal,
     getGoalCreate,
-    getGoalCard,
+    getAllGoal,
     getGoalDetail,
     getCompleteGoal,
     getFailGoal,
@@ -17,9 +17,9 @@ const router = new Elysia().group("/goal", (app) =>
     app
         .use(createGoal) // POST /goal/create
 
-        .use(getAllGoal) // GET /goal/all
+        .use(getUserGoal) // GET /goal/user/:id
         .use(getGoalCreate) // GET /goal/create/:id
-        .use(getGoalCard) // GET /goal/card/:id
+        .use(getAllGoal) // GET /goal/all
         .use(getGoalDetail) // GET /goal/detail/:id
         .use(getTodayGoal) // GET /goal/today/:id
         .use(getCompleteGoal) // GET /goal/complete/:id
