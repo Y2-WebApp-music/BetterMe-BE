@@ -1,4 +1,12 @@
-const BMR_calculate = (birth_date: Date, gender: number, weight: number, height: number, activity: number) => {
+type arguments = {
+    birth_date: Date,
+    gender: number,
+    weight: number,
+    height: number,
+    activity: number
+}
+
+const BMR_calculate = ({ birth_date, gender, weight, height, activity }: arguments) => {
 
     const age = new Date().getFullYear() - new Date(birth_date).getFullYear();
     

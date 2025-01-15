@@ -28,7 +28,7 @@ export const register = app.post("/register", async ({ body }: { body: User }) =
             return { message: "User already exists" };
         }
 
-        const bmr = BMR_calculate(birth_date, gender, weight, height, activity);
+        const bmr = BMR_calculate({ birth_date, gender, weight, height, activity });
 
         const user = new UserModel({
             firebase_uid,
