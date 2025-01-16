@@ -1,4 +1,4 @@
-import { Elysia, t } from "elysia";
+import { Elysia } from "elysia";
 import { createGoal } from '../Controller/goal/CreateGoal';
 import {
     getUserGoal,
@@ -13,7 +13,7 @@ import {
 import { changePublicGoal, updateGoal } from "../Controller/goal/UpdateGoal";
 import { updateTaskStatus } from '../Controller/goal/UpdateTask';
 
-const router = new Elysia().group("/goal", (app) =>
+const goalRoute = new Elysia().group("/goal", (app) =>
     app
         .use(createGoal) // POST /goal/create
 
@@ -31,4 +31,4 @@ const router = new Elysia().group("/goal", (app) =>
         .use(updateTaskStatus) // PUT /goal/:goal_id/task-status
 );
 
-export default router;
+export default goalRoute;
