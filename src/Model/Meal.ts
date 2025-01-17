@@ -1,7 +1,7 @@
 import { ObjectId, Schema, model } from "mongoose";
 
 export interface Meal {
-    user_uid: string;
+    create_by: ObjectId;
     meal_date: Date;
     food_name: string;
     image: string;
@@ -10,11 +10,12 @@ export interface Meal {
     protein: number;
     carbs: number;
     fat: number;
+    createByAI: boolean
 }
 
 const MealSchema = new Schema<Meal>({
-    user_uid: {
-        type: String,
+    create_by: {
+        type: Schema.Types.ObjectId,
         ref: "User",
     },
     meal_date: Date,
@@ -25,6 +26,7 @@ const MealSchema = new Schema<Meal>({
     protein: Number,
     carbs: Number,
     fat: Number,
+    createByAI: Boolean
 });
 
 export const MealModel = model<Meal>("Meal", MealSchema);

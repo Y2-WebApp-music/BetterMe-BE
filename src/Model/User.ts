@@ -1,18 +1,18 @@
 import { Schema, model } from "mongoose";
 
 export interface User {
-    firebase_uid: string,
-    email: string,
-    username: string,
-    birth_date: Date,
-    gender: number, // 1: Male, 2: Female
-    weight: number,
-    height: number,
-    activity: number, // 1-5
-    calorie_need: number,
-    profile_img: string,
-    follower: string[],
-    following: string[],
+    firebase_uid: string;
+    email: string;
+    username: string;
+    birth_date: Date;
+    gender: number; // 1: Male, 2: Female
+    weight: number;
+    height: number;
+    activity: number; // 1-5
+    calorie_need: number;
+    profile_img: string;
+    follower: string[];
+    following: string[];
 }
 
 const UserSchema = new Schema<User>({
