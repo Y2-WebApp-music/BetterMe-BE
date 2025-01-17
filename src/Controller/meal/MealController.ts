@@ -1,12 +1,25 @@
+import { Elysia } from "elysia";
 import { Meal, MealModel } from "../../Model/Meal";
+import { jwt } from '@elysiajs/jwt';
 
-export const addMealByAI = async ({ body }: { body: Meal }) => {
+const app = new Elysia().use(jwt({
+    name: "jwt",
+    secret: String(process.env.JWT_SECRET),
+    exp: "1d",
+}));
+
+export const addMealByAI = app.post("/by-ai", async ({ body, jwt, cookie: { token } }) => {
     try {
         const {
-            user_uid,
             image,
             portion,
-        } = body;
+        } = body as Meal;
+
+        const validToken = await jwt.verify(token.value);
+        if (!validToken) {
+            return { message: "Invalid token" };
+        }
+        const user_id = validToken.user_id;
 
         const response = await fetch('', {
             method: 'POST',
@@ -18,7 +31,7 @@ export const addMealByAI = async ({ body }: { body: Meal }) => {
         const data = await response.json();
 
         const meal = new MealModel({
-            user_uid,
+            create_by: user_id,
             meal_date: new Date(),
             food_name: data.food_name,
             image,
@@ -37,12 +50,47 @@ export const addMealByAI = async ({ body }: { body: Meal }) => {
     } catch (error) {
         console.log(error);
     }
-};
+});
 
-export const addMealByUser = async ({ body }: { body: Meal }) => {
+
+
+export const addMealByUser = app.post("/by-user", async ({ body, jwt, cookie: { token } }) => {
     try {
-        
+        const {
+            food_name,
+            image,
+            portion,
+            calorie,
+            protein,
+            carbs,
+            fat
+        } = body as Meal;
+
+        const validToken = await jwt.verify(token.value);
+        if (!validToken) {
+            return { message: "Invalid token" };
+        }
+        const user_id = validToken.user_id;
+
+        const meal = new MealModel({
+            create_by: user_id,
+            meal_date: new Date(),
+            food_name,
+            image,
+            portion: portion || "",
+            calorie,
+            protein,
+            carbs,
+            fat,
+            createByAI: false
+        });
+        await meal.save();
+
+        return {
+            message: "Add meal success",
+            meal
+        };
     } catch (error) {
         console.log(error);
     }
-};
+});

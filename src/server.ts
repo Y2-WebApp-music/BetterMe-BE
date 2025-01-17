@@ -5,6 +5,7 @@ import { jwt } from "@elysiajs/jwt";
 import { cookie } from "@elysiajs/cookie";
 import userRoute from "./Routes/userRoute";
 import goalRoute from "./Routes/goalRoute";
+import mealRoute from "./Routes/mealRoute";
 
 const PORT = Number(process.env.PORT) || 3000;
 const MONGO_URI = String(process.env.MONGO_URI);
@@ -22,6 +23,7 @@ const app = new Elysia()
 // API routes
 app.use(userRoute);
 app.use(goalRoute);
+app.use(mealRoute);
 
 app.listen(PORT, async () => {
   try {
