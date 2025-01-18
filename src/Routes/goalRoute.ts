@@ -12,6 +12,7 @@ import {
 } from "../Controller/goal/GetGoal";
 import { changePublicGoal, updateGoal } from "../Controller/goal/UpdateGoal";
 import { updateTaskStatus } from '../Controller/goal/UpdateTask';
+import { deleteGoal } from "../Controller/goal/DeleteGoal";
 
 const goalRoute = new Elysia().group("/goal", (app) =>
     app
@@ -29,6 +30,8 @@ const goalRoute = new Elysia().group("/goal", (app) =>
         .use(changePublicGoal) // PUT /goal/public
         .use(updateGoal) // PUT /goal/update/:goal_id
         .use(updateTaskStatus) // PUT /goal/:goal_id/task-status
+
+        .use(deleteGoal) // DELETE /goal/delete/:goal_id
 );
 
 export default goalRoute;
