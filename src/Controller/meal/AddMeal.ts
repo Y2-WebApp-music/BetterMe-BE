@@ -11,7 +11,7 @@ const app = new Elysia().use(jwt({
 export const addMealByAI = app.post("/by-ai", async ({ body, jwt, cookie: { token } }) => {
     try {
         const {
-            image,
+            image_url,
             portion,
         } = body as Meal;
 
@@ -26,7 +26,7 @@ export const addMealByAI = app.post("/by-ai", async ({ body, jwt, cookie: { toke
             headers: {
                 'Content-Type': 'application/json',
             },
-            body: JSON.stringify({ image }),
+            body: JSON.stringify({ image_url }),
         });
         const data = await response.json();
 
@@ -34,7 +34,7 @@ export const addMealByAI = app.post("/by-ai", async ({ body, jwt, cookie: { toke
             create_by: user_id,
             meal_date: new Date(),
             food_name: data.food_name,
-            image,
+            image_url,
             portion,
             calorie: data.calorie,
             protein: data.protein,
@@ -58,7 +58,7 @@ export const addMealByUser = app.post("/by-user", async ({ body, jwt, cookie: { 
     try {
         const {
             food_name,
-            image,
+            image_url,
             portion,
             calorie,
             protein,
@@ -76,7 +76,7 @@ export const addMealByUser = app.post("/by-user", async ({ body, jwt, cookie: { 
             create_by: user_id,
             meal_date: new Date(),
             food_name,
-            image,
+            image_url,
             portion: portion || "",
             calorie,
             protein,

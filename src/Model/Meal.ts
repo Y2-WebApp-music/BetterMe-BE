@@ -4,7 +4,7 @@ export interface Meal {
     create_by: ObjectId;
     meal_date: Date;
     food_name: string;
-    image: string;
+    image_url: string;
     portion: string;
     calorie: number;
     protein: number;
@@ -20,7 +20,7 @@ const MealSchema = new Schema<Meal>({
     },
     meal_date: Date,
     food_name: String,
-    image: String,
+    image_url: String,
     portion: String,
     calorie: Number,
     protein: Number,
