@@ -1,6 +1,7 @@
 import { Elysia } from "elysia";
 import { Meal, MealModel } from "../../Model/Meal";
 import { jwt } from '@elysiajs/jwt';
+import axios from "axios";
 
 const serverAI = String(process.env.SERVER_AI)
 
@@ -17,14 +18,8 @@ export const getMealByAI = app.post("/by-ai", async ({ body }: { body: Meal }) =
             portion,
         } = body;
 
-        const response = await fetch(`${serverAI}/image-caption`, {
-            method: 'POST',
-            headers: {
-                'Content-Type': 'application/json',
-            },
-            body: JSON.stringify({ image_url }),
-        });
-        const meal_data = await response.json();
+        const response = await axios.post(`${serverAI}/image-caption`, { image_url });
+        const meal_data = response.data;
 
         return {
             message: "Get meal by AI success",
