@@ -3,7 +3,7 @@ import { Meal, MealModel } from "../../Model/Meal";
 
 const app = new Elysia();
 
-export const getMealDatail = app.get("/detail/:meal_id", async ({ params }) => {
+export const getMealDetail = app.get("/detail/:meal_id", async ({ params }) => {
     try {
         const { meal_id } = params;
         const meal = await MealModel.findById(meal_id).populate('create_by', 'firebase_uid username');
