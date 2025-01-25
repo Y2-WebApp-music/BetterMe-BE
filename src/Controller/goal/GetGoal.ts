@@ -193,8 +193,11 @@ export const getInProgressGoal = app.get("/in-progress/:id", async ({ params }) 
         }
 
         const inProgressGoals = goals.filter(goal => {
+            const today = new Date();
+            const end_date = new Date(goal.end_date);
+            end_date.setDate(end_date.getDate() + 1);
             const completeTaskCount = goal.tasks.filter(task => task.status === true).length;
-            return (completeTaskCount > 0) && (completeTaskCount < goal.tasks.length);
+            return (completeTaskCount < goal.tasks.length) && (today <= end_date);
         });
         if (inProgressGoals.length === 0) {
             return { message: "No in progress goals" };
@@ -217,8 +220,11 @@ export const getFailGoal = app.get("/fail/:id", async ({ params }) => {
         }
 
         const failGoals = goals.filter(goal => {
+            const today = new Date();
+            const end_date = new Date(goal.end_date);
+            end_date.setDate(end_date.getDate() + 1);
             const completeTaskCount = goal.tasks.filter(task => task.status === true).length;
-            return (completeTaskCount < goal.tasks.length) && (new Date() > new Date(goal.end_date));
+            return (completeTaskCount < goal.tasks.length) && (today > end_date);
         });
         if (failGoals.length === 0) {
             return { message: "No failed goals" };
