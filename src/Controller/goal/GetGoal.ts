@@ -9,8 +9,8 @@ const app = new Elysia().use(jwt({
 }));
 
 // display Card of goal in (tabs)/home/yourGoal
-// get all goal of user
-export const getUserGoal = app.get("/user/:id", async ({ params }) => {
+// get all goals of user
+export const getUserGoals = app.get("/user/:id", async ({ params }) => {
     try {
         const { id } = params;
         const goals = await GoalModel.find({ create_by: id });
@@ -36,7 +36,7 @@ export const getUserGoal = app.get("/user/:id", async ({ params }) => {
 
 
 // HomeGoalCard in (tabs)/home/index
-export const getTodayGoal = app.get("/today/:id", async ({ params }) => {
+export const getTodayGoals = app.get("/today/:id", async ({ params }) => {
     try {
         const { id } = params;
         const goals = await GoalModel.find({ create_by: id }).populate('create_by', 'firebase_uid username');
@@ -103,7 +103,7 @@ export const getGoalCreate = app.get("/create/:id", async ({ params }) => {
 
 // Goal Card in Create goal (tabs)/home/createGoal
 // get all goal in the database
-export const getAllGoal = app.get("/all", async () => {
+export const getAllGoals = app.get("/all", async () => {
     try {
         const goal = await GoalModel.find({}).populate('create_by', 'firebase_uid username');
         if (!goal) {
@@ -160,7 +160,7 @@ export const getGoalDetail = app.get("/detail/:id", async ({ params }) => {
 
 
 
-export const getCompleteGoal = app.get("/complete/:id", async ({ params }) => {
+export const getCompleteGoals = app.get("/complete/:id", async ({ params }) => {
     try {
         const { id } = params;
         const goals = await GoalModel.find({ create_by: id });
@@ -184,7 +184,7 @@ export const getCompleteGoal = app.get("/complete/:id", async ({ params }) => {
 
 
 
-export const getInProgressGoal = app.get("/in-progress/:id", async ({ params }) => {
+export const getInProgressGoals = app.get("/in-progress/:id", async ({ params }) => {
     try {
         const { id } = params;
         const goals = await GoalModel.find({ create_by: id });
@@ -211,7 +211,7 @@ export const getInProgressGoal = app.get("/in-progress/:id", async ({ params }) 
 
 
 
-export const getFailGoal = app.get("/fail/:id", async ({ params }) => {
+export const getFailGoals = app.get("/fail/:id", async ({ params }) => {
     try {
         const { id } = params;
         const goals = await GoalModel.find({ create_by: id });

@@ -10,7 +10,7 @@ export interface Meal {
     protein: number;
     carbs: number;
     fat: number;
-    createByAI: boolean
+    createByAI: boolean;
 }
 
 const MealSchema = new Schema<Meal>({
