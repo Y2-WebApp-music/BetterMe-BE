@@ -1,14 +1,14 @@
 import { Elysia } from "elysia";
 import { createGoal } from '../Controller/goal/CreateGoal';
 import {
-    getUserGoal,
-    getTodayGoal,
+    getUserGoals,
+    getTodayGoals,
     getGoalCreate,
-    getAllGoal,
+    getAllGoals,
     getGoalDetail,
-    getCompleteGoal,
-    getFailGoal,
-    getInProgressGoal
+    getCompleteGoals,
+    getFailGoals,
+    getInProgressGoals
 } from "../Controller/goal/GetGoal";
 import { changePublicGoal, updateGoal } from "../Controller/goal/UpdateGoal";
 import { updateTaskStatus } from '../Controller/goal/UpdateTask';
@@ -18,14 +18,14 @@ const goalRoute = new Elysia().group("/goal", (app) =>
     app
         .use(createGoal) // POST /goal/create
 
-        .use(getUserGoal) // GET /goal/user/:id
+        .use(getUserGoals) // GET /goal/user/:id
         .use(getGoalCreate) // GET /goal/create/:id
-        .use(getAllGoal) // GET /goal/all
+        .use(getAllGoals) // GET /goal/all
         .use(getGoalDetail) // GET /goal/detail/:id
-        .use(getTodayGoal) // GET /goal/today/:id
-        .use(getCompleteGoal) // GET /goal/complete/:id
-        .use(getFailGoal) // GET /goal/fail/:id
-        .use(getInProgressGoal) // GET /goal/in-progress/:id
+        .use(getTodayGoals) // GET /goal/today/:id
+        .use(getCompleteGoals) // GET /goal/complete/:id
+        .use(getFailGoals) // GET /goal/fail/:id
+        .use(getInProgressGoals) // GET /goal/in-progress/:id
 
         .use(changePublicGoal) // PUT /goal/public
         .use(updateGoal) // PUT /goal/update/:goal_id

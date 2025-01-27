@@ -32,7 +32,7 @@ export const getMeals = app.get("/meal/:date", async ({ jwt, cookie: { token }, 
 
         const range = dateRange(new Date(date));
         const meals = await MealModel.find({
-            meal_date: { $gte: range.start, $lt: range.end },
+            meal_date: { $gte: range.start, $lte: range.end },
             create_by: user_id
         });
         if (!meals) {
@@ -50,6 +50,44 @@ export const getMeals = app.get("/meal/:date", async ({ jwt, cookie: { token }, 
         })
 
         return meal_data;
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+
+
+export const getGoals = app.get("/goal/:date", async ({ jwt, cookie: { token }, params }) => {
+    try {
+        const { date } = params;
+
+        const validToken = await jwt.verify(token.value);
+        if (!validToken) {
+            return { message: "Invalid token" };
+        }
+        const user_id = validToken.user_id;
+
+        const goals = await GoalModel.find({
+            start_date: { $lte: new Date(date) },
+            end_date: { $gte: new Date(date) },
+            create_by: user_id
+        });
+        if (goals.length === 0) {
+            return { message: "No goals found" };
+        }
+
+        const goal_data = goals.map(goal => {
+            const completeTaskCount = goal.tasks.filter(task => task.status === true).length;
+            return {
+                goal_id: goal._id.toString(),
+                goal_name: goal.goal_name,
+                total_task: goal.tasks.length,
+                complete_task: completeTaskCount,
+                end_date: goal.end_date,
+            }
+        })
+
+        return goal_data;
     } catch (error) {
         console.log(error);
     }
