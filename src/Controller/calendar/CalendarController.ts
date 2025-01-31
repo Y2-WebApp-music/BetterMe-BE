@@ -35,7 +35,7 @@ export const getMeals = app.get("/meal/:date", async ({ jwt, cookie: { token }, 
             meal_date: { $gte: range.start, $lte: range.end },
             create_by: user_id
         });
-        if (!meals) {
+        if (!meals || meals.length === 0) {
             return { message: "No meals found" };
         }
 
@@ -72,7 +72,7 @@ export const getGoals = app.get("/goal/:date", async ({ jwt, cookie: { token }, 
             end_date: { $gte: new Date(date) },
             create_by: user_id
         });
-        if (goals.length === 0) {
+        if (!goals || goals.length === 0) {
             return { message: "No goals found" };
         }
 
@@ -88,6 +88,49 @@ export const getGoals = app.get("/goal/:date", async ({ jwt, cookie: { token }, 
         })
 
         return goal_data;
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+
+
+export const getSummaryMeal = app.get("/summary-meal/:date", async ({ jwt, cookie: { token }, params }) => {
+    try {
+        const { date } = params;
+
+        const validToken = await jwt.verify(token.value);
+        if (!validToken) {
+            return { message: "Invalid token" };
+        }
+        const user_id = validToken.user_id;
+
+        const range = dateRange(new Date(date));
+        const meals = await MealModel.find({
+            meal_date: { $gte: range.start, $lte: range.end },
+            create_by: user_id
+        });
+        if (!meals || meals.length === 0) {
+            return { message: "No meals found" };
+        }
+
+        let total_calorie = 0;
+        let total_protein = 0;
+        let total_carbs = 0;
+        let total_fat = 0;
+        meals.forEach(meal => {
+            total_calorie += meal.calorie;
+            total_protein += meal.protein;
+            total_carbs += meal.carbs;
+            total_fat += meal.fat;
+        });
+
+        return {
+            total_calorie,
+            total_protein,
+            total_carbs,
+            total_fat
+        };
     } catch (error) {
         console.log(error);
     }
