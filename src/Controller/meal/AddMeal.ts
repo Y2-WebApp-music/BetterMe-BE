@@ -11,20 +11,23 @@ const app = new Elysia().use(jwt({
     exp: "1d",
 }));
 
-export const getMealByAI = app.post("/by-ai", async ({ body }: { body: Meal }) => {
-    try {
-        const {
-            image_url,
-            portion,
-        } = body;
+interface MealBody {
+    image: Blob;
+    portion: string;
+}
 
-        const response = await axios.post(`${serverAI}/image-caption`, { image_url });
+export const getMealByAI = app.post("/by-ai", async ({ body }: { body: MealBody }) => {
+    try {
+        const { image, portion } = body;
+
+        const formData = new FormData();
+        formData.append("image", image, image.name);
+        formData.append("portion", portion);
+
+        const response = await axios.post(`${serverAI}/image-caption`, formData);
         const meal_data = response.data;
 
-        return {
-            message: "Get meal by AI success",
-            meal_data
-        };
+        return meal_data;
     } catch (error) {
         console.log(error);
     }
