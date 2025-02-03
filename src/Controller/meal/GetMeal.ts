@@ -16,7 +16,7 @@ export const getMealDetail = app.get("/detail/:meal_id", async ({ params }) => {
             create_by: meal.create_by,
             meal_date: meal.meal_date,
             food_name: meal.food_name,
-            image: meal.image_url,
+            image_url: meal.image_url,
             portion: meal.portion,
             calorie: meal.calorie,
             protein: meal.protein,
