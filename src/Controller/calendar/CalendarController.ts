@@ -95,7 +95,7 @@ export const getGoals = app.get("/goal/:date", async ({ jwt, cookie: { token }, 
 
 
 
-export const getSummaryMeal = app.get("/summary-meal/:date", async ({ jwt, cookie: { token }, params }) => {
+export const getMealSummary = app.get("/meal/summary/:date", async ({ jwt, cookie: { token }, params }) => {
     try {
         const { date } = params;
 

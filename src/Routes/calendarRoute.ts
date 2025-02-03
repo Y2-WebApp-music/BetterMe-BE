@@ -1,11 +1,11 @@
 import { Elysia } from "elysia";
-import { getMeals, getGoals, getSummaryMeal } from "../Controller/calendar/CalendarController";
+import { getMeals, getGoals, getMealSummary } from "../Controller/calendar/CalendarController";
 
 const calendarRoute = new Elysia().group("/calendar", (app) =>
     app
         .use(getMeals) // GET /calendar/meal/:date
         .use(getGoals) // GET /calendar/goal/:date
-        .use(getSummaryMeal) // GET /calendar/summary-meal/:date
+        .use(getMealSummary) // GET /calendar/meal/summary/:date
 );
 
 export default calendarRoute;
