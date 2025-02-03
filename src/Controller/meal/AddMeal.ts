@@ -21,14 +21,13 @@ export const getMealByAI = app.post("/by-ai", async ({ body }: { body: MealBody 
         const { image, portion } = body;
 
         const buffer = Buffer.from(image, 'base64');
-
         const blob = new Blob([buffer], { type: 'image/jpeg' });
 
         const formData = new FormData();
         formData.append("image", blob, "image.jpg");
         formData.append("portion", portion);
 
-        const response = await axios.post(`${serverAI}/analyze`, formData);
+        const response = await axios.post(`${serverAI}/image-caption`, formData);
         const meal_data = response.data;
 
         return meal_data;
