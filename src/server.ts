@@ -7,6 +7,7 @@ import userRoute from "./Routes/userRoute";
 import goalRoute from "./Routes/goalRoute";
 import mealRoute from "./Routes/mealRoute";
 import calendarRoute from "./Routes/calendarRoute";
+import menuRoute from "./Routes/menuRoute";
 
 const PORT = Number(process.env.PORT) || 3000;
 const MONGO_URI = String(process.env.MONGO_URI);
@@ -26,6 +27,7 @@ app.use(userRoute);
 app.use(goalRoute);
 app.use(mealRoute);
 app.use(calendarRoute);
+app.use(menuRoute);
 
 app.listen(PORT, async () => {
   try {
