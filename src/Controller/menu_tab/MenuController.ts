@@ -10,7 +10,7 @@ const app = new Elysia().use(jwt({
     exp: "1d",
 }));
 
-const weekRange = (date: Date) => {
+const weekRange = (date: string) => {
     const start = new Date(date);
     start.setDate(start.getDate() - start.getDay());
     const end = new Date(start);
@@ -28,7 +28,7 @@ export const getWeeklyMeal = app.get("/meal/weekly/:date", async ({ jwt, cookie:
         }
         const user_id = validToken.user_id;
 
-        const range = weekRange(new Date(date));
+        const range = weekRange(date);
         const meals = await MealModel.find({
             meal_date: { $gte: range.start, $lte: range.end },
             create_by: user_id
