@@ -1,10 +1,15 @@
-# Elysia with Bun runtime
+# BetterMe Backend
 
-## Getting Started
-To get started with this template, simply paste this command into your terminal:
+### Install Bun:
+* Windows 
 ```bash
-bun create elysia ./elysia-example
+powershell -c "irm bun.sh/install.ps1 | iex"
 ```
+* Linux & macOS
+```bash
+curl -fsSL https://bun.sh/install | bash
+```
+
 
 ## Development
 To start the development server run:
@@ -13,3 +18,14 @@ bun run dev
 ```
 
 Open http://localhost:3000/ with your browser to see the result.
+
+## Docker
+Build :
+```bash
+docker-compose build
+```
+
+Run :
+```bash
+docker-compose up -d
+```
