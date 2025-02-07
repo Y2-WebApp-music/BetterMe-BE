@@ -1,0 +1,14 @@
+version: '3.1'
+
+services:
+  server:
+    container_name: betterme-backend
+    restart: on-failure
+    build: .
+    environment:
+      - PORT = ${PORT}
+      - MONGO_URI = ${MONGO_URI}
+      - SECRET_JWT = ${SECRET_JWT}
+      - SERVER_AI = ${SERVER_AI}
+    ports:
+      - "${PORT}:${PORT}"
