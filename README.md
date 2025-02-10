@@ -22,10 +22,10 @@ Open http://localhost:3000/ with your browser to see the result.
 ## Docker
 Build :
 ```bash
-docker-compose build
+docker compose build
 ```
 
 Run :
 ```bash
-docker-compose up -d
+docker compose up -d
 ```
