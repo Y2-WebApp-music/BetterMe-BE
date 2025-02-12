@@ -9,7 +9,7 @@ const app = new Elysia().use(jwt({
     exp: "1d",
 }))
 
-export const register = app.post("/register", async ({ body }: { body: User }) => {
+export const register = app.post("/register", async ({ body, jwt, cookie: { token } }) => {
     try {
         const {
             firebase_uid,
@@ -21,7 +21,7 @@ export const register = app.post("/register", async ({ body }: { body: User }) =
             height,
             activity,
             profile_img,
-        } = body;
+        } = body as User;
 
         const findUser = await UserModel.findOne({ firebase_uid });
         if (findUser) {
@@ -44,8 +44,19 @@ export const register = app.post("/register", async ({ body }: { body: User }) =
         });
         await user.save();
 
+        token.set({
+            value: await jwt.sign({
+                user_id: user._id.toString(),
+                username: user.username,
+                email: user.email,
+                profile_img: user.profile_img
+            }),
+            httpOnly: true,
+        })
+
         return {
             message: "Register success",
+            token: token.value,
             user,
         };
     } catch (error) {
