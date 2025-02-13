@@ -3,7 +3,7 @@ import { Meal, MealModel } from "../../Model/Meal";
 import { jwt } from '@elysiajs/jwt';
 import axios from "axios";
 
-const serverAI = String(process.env.SERVER_AI)
+const serverAI = String(process.env.SERVER_AI);
 
 const app = new Elysia().use(jwt({
     name: "jwt",
@@ -22,22 +22,31 @@ export const getMealByAI = app.post("/by-ai", async ({ body }: { body: MealBody 
 
         const base64 = image.split(",")[1]; // remove metadata prefix
 
+        // Log the base64 string safely
+        console.log(image)
         const response = await axios.post(`${serverAI}/image-caption`, {
             image: base64,
             portion
         });
-        const meal_data = response.data;
 
-        return meal_data;
+        return { status: 200, data: response.data };
     } catch (error) {
-        console.log(error);
+        console.error("Error in getMealByAI:", error);
+        return { status: 500, message: "Internal Server Error" };
     }
 });
 
-
-
 export const addMeal = app.post("/add", async ({ body, jwt, cookie: { token } }) => {
     try {
+        if (!token || !token.value) {
+            return { status: 401, message: "Unauthorized: No token provided" };
+        }
+
+        const validToken = await jwt.verify(token.value);
+        if (!validToken) {
+            return { status: 403, message: "Invalid token" };
+        }
+
         const {
             meal_date,
             food_name,
@@ -50,10 +59,10 @@ export const addMeal = app.post("/add", async ({ body, jwt, cookie: { token } })
             createByAI
         } = body as Meal;
 
-        const validToken = await jwt.verify(token.value);
-        if (!validToken) {
-            return { message: "Invalid token" };
+        if (!meal_date || !food_name || !image_url || calorie === undefined || protein === undefined || carbs === undefined || fat === undefined) {
+            return { status: 400, message: "Missing required meal details" };
         }
+
         const user_id = validToken.user_id;
 
         const meal = new MealModel({
@@ -68,13 +77,16 @@ export const addMeal = app.post("/add", async ({ body, jwt, cookie: { token } })
             fat,
             createByAI
         });
+
         await meal.save();
 
         return {
-            message: "Add meal success",
+            status: 201,
+            message: "Meal added successfully",
             meal
         };
     } catch (error) {
-        console.log(error);
+        console.error("Error in addMeal:", error);
+        return { status: 500, message: "Internal Server Error" };
     }
 });
