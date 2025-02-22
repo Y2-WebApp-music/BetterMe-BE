@@ -1,5 +1,5 @@
 import { Elysia } from "elysia";
-import { Post, PostModel, Comment, CommentModel } from "../../Model/Community";
+import { Post, PostModel } from "../../Model/Community";
 
 const app = new Elysia();
 
