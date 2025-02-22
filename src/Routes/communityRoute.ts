@@ -8,8 +8,8 @@ const communityRoute = new Elysia().group("/community", (app) =>
         .use(createPost) // POST /community/post/create
         .use(deletePost) // DELETE /community/post/delete/:post_id
 
-        .use(createComment) // POST /community/comment/create
-        .use(deleteComment) // DELETE /community/comment/delete
+        .use(createComment) // POST /community/comment/create?post_id=
+        .use(deleteComment) // DELETE /community/comment/delete?post_id=&comment_id=
 );
 
 export default communityRoute;

@@ -1,19 +1,17 @@
 import { Elysia } from "elysia";
-import { CommentModel, PostModel } from "../../Model/Community";
+import { Comment, CommentModel, PostModel } from "../../Model/Community";
 
 const app = new Elysia();
 
-interface CommentBody {
-    post_id: string;
-    comment_id: string;
-    content: string;
-    create_by: string;
-}
-
-export const createComment = app.post("/comment/create", async ({ body }: { body: CommentBody }) => {
+export const createComment = app.post("/comment/create", async (
+    { query, body }: {
+        query: { post_id: string },
+        body: Comment
+    }
+) => {
     try {
+        const { post_id } = query;
         const {
-            post_id,
             content,
             create_by
         } = body;
@@ -43,12 +41,13 @@ export const createComment = app.post("/comment/create", async ({ body }: { body
 
 
 
-export const deleteComment = app.delete("/comment/delete", async ({ body }: { body: CommentBody }) => {
+export const deleteComment = app.delete("/comment/delete", async ({ query }) => {
     try {
-        const {
-            post_id,
-            comment_id
-        } = body;
+        const { post_id, comment_id } = query;
+
+        if (!post_id || !comment_id) {
+            return { message: "Missing post_id or comment_id" };
+        }
 
         const post = await PostModel.findById(post_id);
         if (!post) {
