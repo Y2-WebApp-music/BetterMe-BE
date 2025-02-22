@@ -1,5 +1,5 @@
 import { Elysia } from "elysia";
-import { createPost } from "../Controller/community/PostController";
+import { createPost } from "../Controller/community/CreatePost";
 import { createComment, deleteComment } from "../Controller/community/CommentController";
 
 const communityRoute = new Elysia().group("/community", (app) =>
