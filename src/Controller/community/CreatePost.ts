@@ -9,7 +9,8 @@ export const createPost = app.post("/post/create", async ({ body }: { body: Post
             content,
             image_url,
             tag,
-            create_by
+            create_by,
+            post_date
         } = body;
 
         const post = new PostModel({
@@ -17,7 +18,7 @@ export const createPost = app.post("/post/create", async ({ body }: { body: Post
             image_url,
             tag,
             create_by,
-            post_date: new Date(),
+            post_date: post_date || new Date(),
         });
         await post.save();
 
