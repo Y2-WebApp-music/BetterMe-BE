@@ -1,4 +1,4 @@
-import { Schema, model } from "mongoose";
+import { ObjectId, Schema, model } from "mongoose";
 
 export interface User {
     firebase_uid: string;
@@ -11,8 +11,8 @@ export interface User {
     activity: number; // 1-5
     calorie_need: number;
     profile_img: string;
-    follower: string[];
-    following: string[];
+    follower: ObjectId[];
+    following: ObjectId[];
 }
 
 const UserSchema = new Schema<User>({
@@ -47,11 +47,11 @@ const UserSchema = new Schema<User>({
     calorie_need: Number,
     profile_img: String,
     follower: [{
-        type: String,
+        type: Schema.Types.ObjectId,
         ref: 'User',
     }],
     following: [{
-        type: String,
+        type: Schema.Types.ObjectId,
         ref: 'User',
     }],
 });
