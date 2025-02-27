@@ -12,3 +12,9 @@ services:
       - SERVER_AI=${SERVER_AI}
     ports:
       - "${PORT}:${PORT}"
+
+  server-ai:
+    image: palanoyz/betterme-imagecaption:latest
+    container_name: betterme-imagecaption
+    ports:
+      - "8000:8000"

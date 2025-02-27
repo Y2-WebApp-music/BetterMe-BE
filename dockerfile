@@ -1,6 +1,6 @@
 # Use the official Bun image
 FROM oven/bun:1 AS base
-WORKDIR /usr/src/app
+WORKDIR /user/src/app
 
 # Copy application files and install dependencies
 COPY package.json bun.lockb ./
