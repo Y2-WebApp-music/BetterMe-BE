@@ -2,7 +2,7 @@ import { Elysia } from "elysia";
 import { createPost } from "../Controller/community/CreatePost";
 import { updatePost } from "../Controller/community/UpdatePost";
 import { deletePost } from "../Controller/community/DeletePost";
-import { getUserPosts, getPostDetail } from "../Controller/community/GetCommunity";
+import { getUserPosts, getPostDetail } from "../Controller/community/GetPost";
 import { createComment, deleteComment } from "../Controller/community/CommentController";
 import { likePost, followUser } from "../Controller/community/LikeFollow";
 
