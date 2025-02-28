@@ -235,3 +235,29 @@ export const getFailGoals = app.get("/fail/:id", async ({ params }) => {
         console.log(error);
     }
 });
+
+
+
+
+
+// Use in Community
+export const getGoalCards = app.get("/goal/card", async () => {
+    try {
+        const goals = await GoalModel.find({ public_goal: true });
+
+        const goal_data = goals.map(goal => {
+            const completeTaskCount = goal.tasks.filter(task => task.status === true).length;
+            return {
+                goal_id: goal._id.toString(),
+                goal_name: goal.goal_name,
+                end_date: goal.end_date,
+                total_task: goal.tasks.length,
+                complete_task: completeTaskCount
+            }
+        });
+
+        return goal_data;
+    } catch (error) {
+        console.log(error);
+    }
+});
