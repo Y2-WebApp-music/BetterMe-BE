@@ -261,3 +261,34 @@ export const getGoalCards = app.get("/goal/card", async () => {
         console.log(error);
     }
 });
+
+
+
+export const getGoalDetailCommu = app.get("/goal/detail/:id", async ({ params }) => {
+    try {
+        const { id } = params;
+        const goal = await GoalModel.findById(id).populate('create_by', 'firebase_uid username profile_img');
+        if (!goal) {
+            return { message: "Goal not found" };
+        }
+
+        const completeTaskCount = goal.tasks.filter(task => task.status === true).length;
+        const goal_data = {
+            goal_id: goal._id.toString(),
+            goal_name: goal.goal_name,
+            description: goal.description,
+            start_date: goal.start_date,
+            end_date: goal.end_date,
+            task: goal.tasks,
+            public_goal: goal.public_goal,
+            total_task: goal.tasks.length,
+            complete_task: completeTaskCount,
+            username: (goal.create_by as any).username,
+            profile_img: (goal.create_by as any).profile_img
+        }
+
+        return goal_data;
+    } catch (error) {
+        console.log(error);
+    }
+});

@@ -5,7 +5,7 @@ import { deletePost } from "../Controller/community/DeletePost";
 import { getUserPosts, getPostDetail } from "../Controller/community/GetPost";
 import { createComment, deleteComment } from "../Controller/community/CommentController";
 import { likePost, followUser } from "../Controller/community/LikeFollow";
-import { getGoalCards } from "../Controller/goal/GetGoal";
+import { getGoalCards, getGoalDetailCommu } from "../Controller/goal/GetGoal";
 
 const communityRoute = new Elysia().group("/community", (app) =>
     app
@@ -23,6 +23,7 @@ const communityRoute = new Elysia().group("/community", (app) =>
         .use(followUser) // PUT /community/user/follow?user_id=&follower_id=
 
         .use(getGoalCards) // GET /community/goal/card
+        .use(getGoalDetailCommu) // GET /community/goal/detail/:id
 );
 
 export default communityRoute;
