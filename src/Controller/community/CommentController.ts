@@ -13,7 +13,8 @@ export const createComment = app.post("/comment/create", async (
         const { post_id } = query;
         const {
             content,
-            create_by
+            create_by,
+            comment_date
         } = body;
 
         const post = await PostModel.findById(post_id);
@@ -24,7 +25,7 @@ export const createComment = app.post("/comment/create", async (
         const comment = new CommentModel({
             content,
             create_by,
-            comment_date: new Date(),
+            comment_date: comment_date || new Date(),
         });
         await comment.save();
 
