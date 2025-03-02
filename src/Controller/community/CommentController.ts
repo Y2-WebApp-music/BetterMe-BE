@@ -42,9 +42,9 @@ export const createComment = app.post("/comment/create", async (
 
 
 
-export const getComments = app.get("/comment/:post_id", async ({ params }) => {
+export const getComments = app.get("/comment", async ({ query }) => {
     try {
-        const { post_id } = params;
+        const { post_id } = query;
 
         const post = await PostModel.findById(post_id).populate("comment");
         if (!post) {

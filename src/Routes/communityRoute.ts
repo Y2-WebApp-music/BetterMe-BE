@@ -17,7 +17,7 @@ const communityRoute = new Elysia().group("/community", (app) =>
         .use(getPostDetail) // GET /community/post/:post_id
 
         .use(createComment) // POST /community/comment/create?post_id=
-        .use(getComments) // GET /community/comment/:post_id
+        .use(getComments) // GET /community/comment?post_id=
         .use(deleteComment) // DELETE /community/comment/delete?post_id=&comment_id=
 
         .use(likePost) // PUT /community/post/like?post_id=&user_id=
