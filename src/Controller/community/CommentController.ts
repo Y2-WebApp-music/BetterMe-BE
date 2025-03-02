@@ -42,6 +42,23 @@ export const createComment = app.post("/comment/create", async (
 
 
 
+export const getComments = app.get("/comment/:post_id", async ({ params }) => {
+    try {
+        const { post_id } = params;
+
+        const post = await PostModel.findById(post_id).populate("comment");
+        if (!post) {
+            return { message: "Post not found" };
+        }
+
+        return post.comment;
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+
+
 export const deleteComment = app.delete("/comment/delete", async ({ query }) => {
     try {
         const { post_id, comment_id } = query;

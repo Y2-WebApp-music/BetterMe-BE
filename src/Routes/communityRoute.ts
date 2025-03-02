@@ -3,7 +3,7 @@ import { createPost } from "../Controller/community/CreatePost";
 import { updatePost } from "../Controller/community/UpdatePost";
 import { deletePost } from "../Controller/community/DeletePost";
 import { getUserPosts, getPostDetail } from "../Controller/community/GetPost";
-import { createComment, deleteComment } from "../Controller/community/CommentController";
+import { createComment, getComments, deleteComment } from "../Controller/community/CommentController";
 import { likePost, followUser } from "../Controller/community/LikeFollow";
 import { getGoalCards, getGoalDetailCommu } from "../Controller/goal/GetGoal";
 
@@ -17,6 +17,7 @@ const communityRoute = new Elysia().group("/community", (app) =>
         .use(getPostDetail) // GET /community/post/:post_id
 
         .use(createComment) // POST /community/comment/create?post_id=
+        .use(getComments) // GET /community/comment/:post_id
         .use(deleteComment) // DELETE /community/comment/delete?post_id=&comment_id=
 
         .use(likePost) // PUT /community/post/like?post_id=&user_id=
