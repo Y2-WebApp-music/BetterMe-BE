@@ -37,7 +37,15 @@ export const getPostDetail = app.get("/post/:post_id", async ({ params }) => {
     try {
         const { post_id } = params;
 
-        const post = await PostModel.findById(post_id).populate("comment");
+        const post = await PostModel.findById(post_id)
+            .populate({
+                path: 'comment',
+                populate: {
+                    path: 'create_by',
+                    select: 'username profile_img'
+                }
+            })
+            .populate("create_by", "username profile_img");
         if (!post) {
             return { message: "Post not found" };
         }
@@ -47,6 +55,7 @@ export const getPostDetail = app.get("/post/:post_id", async ({ params }) => {
 
         const post_data = {
             post_id: post._id.toString(),
+            create_by: post.create_by,
             date: post.post_date,
             content: post.content,
             tag: post.tag,
@@ -73,8 +82,13 @@ export const getPostFeed = app.get("/post/feed/:id", async ({ params }) => {
             return { message: "User not found" };
         }
 
-        const posts = await PostModel.find({ create_by: { $in: user.following } }).sort({ post_date: -1 });
-        const posts2 = await PostModel.find({ create_by: { $nin: user.following } }).sort({ post_date: -1 });
+        const posts = await PostModel.find({ create_by: { $in: user.following } })
+            .populate("create_by", "username profile_img")
+            .sort({ post_date: -1 });
+
+        const posts2 = await PostModel.find({ create_by: { $nin: user.following } })
+            .populate("create_by", "username profile_img")
+            .sort({ post_date: -1 });
 
         const likePosts = [...posts, ...posts2].filter(post => post.like.includes(id as any));
         const unlikePosts = [...posts, ...posts2].filter(post => !post.like.includes(id as any));
@@ -86,6 +100,7 @@ export const getPostFeed = app.get("/post/feed/:id", async ({ params }) => {
             const commentCount = post.comment.length;
             return {
                 post_id: post._id.toString(),
+                create_by: post.create_by,
                 date: post.post_date,
                 content: post.content,
                 tag: post.tag,
