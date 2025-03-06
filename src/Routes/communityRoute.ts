@@ -24,7 +24,7 @@ const communityRoute = new Elysia().group("/community", (app) =>
         .use(likePost) // PUT /community/post/like?post_id=&user_id=
         .use(followUser) // PUT /community/user/follow?user_id=&follower_id=
 
-        .use(getGoalCards) // GET /community/goal/card
+        .use(getGoalCards) // GET /community/goal/card/:id
         .use(getGoalDetailCommu) // GET /community/goal/detail/:id
 
         .use(searchPost) // POST /community/post/search

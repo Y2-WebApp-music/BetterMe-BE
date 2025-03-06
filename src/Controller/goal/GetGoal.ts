@@ -241,9 +241,14 @@ export const getFailGoals = app.get("/fail/:id", async ({ params }) => {
 
 
 // Use in Community
-export const getGoalCards = app.get("/goal/card", async () => {
+export const getGoalCards = app.get("/goal/card/:id", async ({ params }) => {
     try {
-        const goals = await GoalModel.find({ public_goal: true });
+        const { id } = params;
+
+        const goals = await GoalModel.find({ create_by: id, public_goal: true });
+        if (!goals) {
+            return { message: "Goal not found" };
+        }
 
         const goal_data = goals.map(goal => {
             const completeTaskCount = goal.tasks.filter(task => task.status === true).length;
