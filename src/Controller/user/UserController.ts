@@ -66,3 +66,25 @@ export const updateUser = app.put("/update/:id", async (
         console.log(error);
     }
 });
+
+
+
+export const getFollow = app.get("/follow/:id", async ({ params }) => {
+    try {
+        const { id } = params;
+
+        const user = await UserModel.findById(id);
+        if (!user) {
+            return { message: "User not found" };
+        }
+
+        const user_data = {
+            follower: user.follower,
+            following: user.following
+        }
+
+        return user_data;
+    } catch (error) {
+        console.log(error);
+    }
+});
