@@ -46,7 +46,14 @@ export const getComments = app.get("/comment", async ({ query }) => {
     try {
         const { post_id } = query;
 
-        const post = await PostModel.findById(post_id).populate("comment");
+        const post = await PostModel.findById(post_id).populate({
+            path: 'comment',
+            populate: {
+                path: 'create_by',
+                select: 'username profile_img'
+            }
+        });
+
         if (!post) {
             return { message: "Post not found" };
         }
