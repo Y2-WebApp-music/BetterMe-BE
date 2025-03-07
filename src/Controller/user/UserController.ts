@@ -1,24 +1,29 @@
 import { Elysia } from "elysia";
 import { User, UserModel } from "../../Model/User";
 import BMR_calculate from "../../utils/BMR";
+import { GoalModel } from "../../Model/Goal";
+import { PostModel } from "../../Model/Community";
 
 const app = new Elysia();
 
-export const getUserById = app.get("/profile/:uid", async ({ params }) => {
+export const getUserById = app.get("/profile/:id", async ({ params }) => {
     try {
-        const { uid } = params;
-        const user = await UserModel.findOne({ firebase_uid: uid });
+        const { id } = params;
+        const user = await UserModel.findById(id);
         if (!user) {
             return { message: "User not found" };
         }
 
+        const goalCount = await GoalModel.countDocuments({ create_by: id });
+        const postCount = await PostModel.countDocuments({ create_by: id });
+
         const user_data = {
-            birth_date: user.birth_date,
-            gender: user.gender,
-            weight: user.weight,
-            height: user.height,
-            activity: user.activity,
-            calorie_need: user.calorie_need,
+            _id: user._id,
+            username: user.username,
+            profile_img: user.profile_img,
+            email: user.email,
+            goal: goalCount,
+            post: postCount
         }
 
         return user_data;
