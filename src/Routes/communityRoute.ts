@@ -4,7 +4,7 @@ import { updatePost } from "../Controller/community/UpdatePost";
 import { deletePost } from "../Controller/community/DeletePost";
 import { getUserPosts, getPostDetail } from "../Controller/community/GetPost";
 import { createComment, getComments, deleteComment } from "../Controller/community/CommentController";
-import { likePost, followUser } from "../Controller/community/LikeFollow";
+import { likePost, followUser, getLikedPosts } from "../Controller/community/LikeFollow";
 import { getGoalCards, getGoalDetailCommu } from "../Controller/goal/GetGoal";
 import { searchPost } from "../Controller/community/Search";
 
@@ -23,6 +23,7 @@ const communityRoute = new Elysia().group("/community", (app) =>
 
         .use(likePost) // PUT /community/post/like?post_id=&user_id=
         .use(followUser) // PUT /community/user/follow?user_id=&follower_id=
+        .use(getLikedPosts) // GET /community/like-post/:id
 
         .use(getGoalCards) // GET /community/goal/card/:id
         .use(getGoalDetailCommu) // GET /community/goal/detail/:id

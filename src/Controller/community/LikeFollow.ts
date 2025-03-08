@@ -72,3 +72,21 @@ export const followUser = app.put("/user/follow", async ({ query }) => {
         console.log(error);
     }
 });
+
+
+
+export const getLikedPosts = app.get("/like-post/:id", async ({ params }) => {
+    try {
+        const { id } = params;
+
+        const posts = await PostModel.find({ like: { $in: id } });
+
+        const post_data = posts.map(post => {
+            return post._id.toString();
+        });
+
+        return post_data;
+    } catch (error) {
+        console.log(error);
+    }
+});
