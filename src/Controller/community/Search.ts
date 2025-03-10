@@ -39,3 +39,19 @@ export const searchPostByTag = app.post("/search/tag", async ({ body }: { body: 
         console.log(error);
     }
 });
+
+
+
+export const searchGoal = app.post("/search/goal", async ({ body }: { body: SearchBody }) => {
+    try {
+        const { keyword } = body;
+        
+        const goals = await GoalModel.find({
+            goal_name: { $regex: keyword, $options: "i" }
+        });
+
+        return goals;
+    } catch (error) {
+        console.log(error);
+    }
+});
