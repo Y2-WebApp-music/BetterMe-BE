@@ -9,7 +9,7 @@ interface SearchBody {
     tag: number[];
 }
 
-export const searchPost = app.post("/post/search", async ({ body }: { body: SearchBody }) => {
+export const searchPost = app.post("/search/post", async ({ body }: { body: SearchBody }) => {
     try {
         const { keyword } = body;
         
@@ -21,5 +21,21 @@ export const searchPost = app.post("/post/search", async ({ body }: { body: Sear
     } catch (error) {
         console.log(error);
         return error;
+    }
+});
+
+
+
+export const searchPostByTag = app.post("/search/tag", async ({ body }: { body: SearchBody }) => {
+    try {
+        const { tag } = body;
+        
+        const posts = await PostModel.find({
+            tag: { $in: tag }
+        });
+
+        return posts;
+    } catch (error) {
+        console.log(error);
     }
 });

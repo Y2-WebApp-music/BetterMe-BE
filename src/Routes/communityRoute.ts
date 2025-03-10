@@ -6,7 +6,7 @@ import { getUserPosts, getPostDetail } from "../Controller/community/GetPost";
 import { createComment, getComments, deleteComment } from "../Controller/community/CommentController";
 import { likePost, followUser, getLikedPosts } from "../Controller/community/LikeFollow";
 import { getGoalCards, getGoalDetailCommu } from "../Controller/goal/GetGoal";
-import { searchPost } from "../Controller/community/Search";
+import { searchPost, searchPostByTag } from "../Controller/community/Search";
 
 const communityRoute = new Elysia().group("/community", (app) =>
     app
@@ -28,7 +28,8 @@ const communityRoute = new Elysia().group("/community", (app) =>
         .use(getGoalCards) // GET /community/goal/card/:id
         .use(getGoalDetailCommu) // GET /community/goal/detail/:id
 
-        .use(searchPost) // POST /community/post/search
+        .use(searchPost) // POST /community/search/post
+        .use(searchPostByTag) // POST /community/search/tag
 );
 
 export default communityRoute;
