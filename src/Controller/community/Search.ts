@@ -78,9 +78,22 @@ export const searchGoal = app.post("/search/goal", async ({ body }: { body: Sear
 
         const goals = await GoalModel.find({
             goal_name: { $regex: keyword, $options: "i" }
-        });
+        }).populate("create_by", "username profile_img");
 
-        return goals;
+        const goal_data = goals.map(goal => {
+            const completeTaskCount = goal.tasks.filter(task => task.status === true).length;
+            return {
+                goal_id: goal._id.toString(),
+                goal_name: goal.goal_name,
+                total_task: goal.tasks.length,
+                start_date: goal.start_date,
+                end_date: goal.end_date,
+                complete_task: completeTaskCount,
+                create_by: goal.create_by
+            }
+        })
+
+        return goal_data;
     } catch (error) {
         console.log(error);
     }
