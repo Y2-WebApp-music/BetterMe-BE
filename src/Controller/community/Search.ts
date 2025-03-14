@@ -77,7 +77,8 @@ export const searchGoal = app.post("/search/goal", async ({ body }: { body: Sear
         const { keyword } = body;
 
         const goals = await GoalModel.find({
-            goal_name: { $regex: keyword, $options: "i" }
+            goal_name: { $regex: keyword, $options: "i" },
+            public_goal: true
         }).populate("create_by", "username profile_img");
 
         const goal_data = goals.map(goal => {
