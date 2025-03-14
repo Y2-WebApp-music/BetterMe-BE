@@ -9,7 +9,7 @@ export const getUserPosts = app.get("/user-posts/:id", async ({ params }) => {
     try {
         const { id } = params;
 
-        const posts = await PostModel.find({ create_by: id });
+        const posts = await PostModel.find({ create_by: id }).sort({ post_date: -1 });
 
         const post_data = posts.map(post => {
             const likeCount = post.like.length;
