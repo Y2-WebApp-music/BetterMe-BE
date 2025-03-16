@@ -68,18 +68,14 @@ export const updateSleep = app.put("/update/:sleep_id", async (
 
 
 //  get total sleep time in a week
-export const getTotalSleepTime = app.get("/total-time", async (
-    { query }: { 
-        query: { date: string, create_by: string } 
-    }
-) => {
+export const getTotalSleepTime = app.get("/total-time", async ({ query }) => {
     try {
-        const { date, create_by } = query;
+        const { date, id } = query;
 
-        const { start, end } = weekRange(date);
+        const { start, end } = weekRange(date as string);
         const sleeps = await SleepModel.find({
             sleep_date: { $gte: start, $lte: end },
-            create_by: create_by
+            create_by: id
         });
         if (!sleeps || sleeps.length === 0) {
             return { message: "No sleep found" };
@@ -108,18 +104,14 @@ export const getTotalSleepTime = app.get("/total-time", async (
 
 
 // get weekly sleep data
-export const getWeeklySleep = app.get("/weekly", async (
-    { query }: { 
-        query: { date: string, create_by: string } 
-    }
-) => {
+export const getWeeklySleep = app.get("/weekly", async ({ query }) => {
     try {
-        const { date, create_by } = query;
+        const { date, id } = query;
 
-        const { start, end } = weekRange(date);
+        const { start, end } = weekRange(date as string);
         const sleeps = await SleepModel.find({
             sleep_date: { $gte: start, $lte: end },
-            create_by: create_by
+            create_by: id
         }).populate("create_by", "username profile_img");
         if (!sleeps || sleeps.length === 0) {
             return { message: "No sleep found" };
@@ -150,6 +142,27 @@ export const getWeeklySleep = app.get("/weekly", async (
         });
 
         return Object.values(summary); // Remove date keys
+    } catch (error) {
+        console.log(error);
+    }
+});
+
+
+
+export const getSleepData = app.get("/data", async ({ query }) => {
+    try {
+        const { date, id } = query;
+
+        const { start, end } = weekRange(date as string);
+        const sleeps = await SleepModel.find({
+            sleep_date: { $gte: start, $lte: end },
+            create_by: id
+        });
+        if (!sleeps || sleeps.length === 0) {
+            return { message: "No sleep found" };
+        }
+
+        return sleeps;
     } catch (error) {
         console.log(error);
     }
