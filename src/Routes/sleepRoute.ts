@@ -1,5 +1,7 @@
 import { Elysia } from "elysia";
-import { createSleep, updateSleep, getTotalSleepTime, getWeeklySleep, getSleepData } from "../Controller/sleep/SleepController";
+import { createSleep } from "../Controller/sleep/CreateSleep";
+import { updateSleep } from "../Controller/sleep/UpdateSleep";
+import { getTotalSleepTime, getWeeklySleep, getSleepData } from "../Controller/sleep/GetSleep";
 
 const sleepRoute = new Elysia().group("/sleep", (app) =>
     app
