@@ -11,6 +11,13 @@ const weekRange = (date: string) => {
     return { start, end };
 }
 
+const dateRange = (date: string) => {
+    const start = new Date(date);
+    const end = new Date(date);
+    end.setDate(end.getDate() + 1);
+    return { start, end };
+}
+
 //  get total sleep time in a week
 export const getTotalSleepTime = app.get("/total-time", async ({ query }) => {
     try {
@@ -85,9 +92,9 @@ export const getSleepData = app.get("/data", async ({ query }) => {
     try {
         const { date, id } = query;
 
-        const { start, end } = weekRange(date as string);
+        const { start, end } = dateRange(date as string);
         const sleeps = await SleepModel.find({
-            sleep_date: { $gte: start, $lte: end },
+            sleep_date: { $gte: start, $lt: end },
             create_by: id
         });
 
@@ -95,7 +102,18 @@ export const getSleepData = app.get("/data", async ({ query }) => {
             return { message: "No sleep found" };
         }
 
-        return sleeps;
+        const sleep_data = sleeps.map((sleep) => {
+            return {
+                sleep_id: sleep._id.toString(),
+                sleep_date: sleep.sleep_date,
+                start_time: sleep.start_time,
+                end_time: sleep.end_time,
+                total_time: sleep.total_time,
+                create_by: sleep.create_by
+            };
+        });
+
+        return sleep_data[0];
     } catch (error) {
         console.log(error);
     }
