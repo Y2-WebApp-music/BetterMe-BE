@@ -53,13 +53,10 @@ export const getWeeklySleep = app.get("/weekly", async ({ query }) => {
         const { date, id } = query;
 
         const { start, end } = weekRange(date as string);
-        const sleeps = await SleepModel
-            .find({
-                sleep_date: { $gte: start, $lte: end },
-                create_by: id
-            })
-            .populate("create_by", "username profile_img")
-            .sort({ sleep_date: 1 });
+        const sleeps = await SleepModel.find({
+            sleep_date: { $gte: start, $lte: end },
+            create_by: id
+        }).sort({ sleep_date: 1 });
 
         if (!sleeps || sleeps.length === 0) {
             return { message: "No sleep found" };
