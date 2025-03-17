@@ -53,39 +53,30 @@ export const getWeeklySleep = app.get("/weekly", async ({ query }) => {
         const { date, id } = query;
 
         const { start, end } = weekRange(date as string);
-        const sleeps = await SleepModel.find({
-            sleep_date: { $gte: start, $lte: end },
-            create_by: id
-        }).populate("create_by", "username profile_img");
+        const sleeps = await SleepModel
+            .find({
+                sleep_date: { $gte: start, $lte: end },
+                create_by: id
+            })
+            .populate("create_by", "username profile_img")
+            .sort({ sleep_date: 1 });
+
         if (!sleeps || sleeps.length === 0) {
             return { message: "No sleep found" };
         }
 
-        const summary: Record<string, any> = {};
-
-        sleeps.forEach((sleep) => {
-            const sleepDate = sleep.sleep_date.toISOString().split("T")[0];
-            if (!summary[sleepDate]) {
-                summary[sleepDate] = {
-                    date: sleepDate,
-                    total_time: 0,
-                    sleep: [],
-                };
-            }
-
-            summary[sleepDate].total_time += sleep.total_time;
-
-            summary[sleepDate].sleep.push({
+        const sleep_data = sleeps.map((sleep) => {
+            return {
                 sleep_id: sleep._id.toString(),
                 sleep_date: sleep.sleep_date,
                 start_time: sleep.start_time,
                 end_time: sleep.end_time,
                 total_time: sleep.total_time,
                 create_by: sleep.create_by
-            });
+            };
         });
 
-        return Object.values(summary); // Remove date keys
+        return sleep_data;
     } catch (error) {
         console.log(error);
     }
@@ -102,6 +93,7 @@ export const getSleepData = app.get("/data", async ({ query }) => {
             sleep_date: { $gte: start, $lte: end },
             create_by: id
         });
+
         if (!sleeps || sleeps.length === 0) {
             return { message: "No sleep found" };
         }
