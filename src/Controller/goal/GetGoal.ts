@@ -1,12 +1,7 @@
 import { Elysia } from "elysia";
 import { GoalModel } from "../../Model/Goal";
-import { jwt } from '@elysiajs/jwt';
 
-const app = new Elysia().use(jwt({
-    name: "jwt",
-    secret: String(process.env.JWT_SECRET),
-    exp: "1d",
-}));
+const app = new Elysia();
 
 // display Card of goal in (tabs)/home/yourGoal
 // get all goals of user

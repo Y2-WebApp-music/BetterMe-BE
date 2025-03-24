@@ -1,14 +1,9 @@
 import { Elysia } from "elysia";
 import { Goal, GoalModel } from "../../Model/Goal";
-import { jwt } from '@elysiajs/jwt';
 
-const app = new Elysia().use(jwt({
-    name: "jwt",
-    secret: String(process.env.JWT_SECRET),
-    exp: "1d",
-}));
+const app = new Elysia();
 
-export const createGoal = app.post("/create", async ({ body, jwt, cookie: { token } }) => {
+export const createGoal = app.post("/create", async ({ body }: { body: Goal }) => {
     try {
         const {
             goal_name,
@@ -17,17 +12,12 @@ export const createGoal = app.post("/create", async ({ body, jwt, cookie: { toke
             end_date,
             tasks,
             public_goal,
-        } = body as Goal;
+            create_by
+        } = body;
 
         if (!tasks) {
             return { message: "At least 1 task is required to create a goal" };
         }
-
-        const validToken = await jwt.verify(token.value);
-        if (!validToken) {
-            return { message: "Invalid token" };
-        }
-        const user_id = validToken.user_id;
 
         const taskStatus = tasks.map(task => ({
             ...task,
@@ -39,7 +29,7 @@ export const createGoal = app.post("/create", async ({ body, jwt, cookie: { toke
             description,
             start_date: new Date(start_date),
             end_date: new Date(end_date),
-            create_by: user_id || null,
+            create_by,
             tasks: taskStatus,
             public_goal: public_goal || false,
         });
