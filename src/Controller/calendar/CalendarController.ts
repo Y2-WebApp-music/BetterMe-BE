@@ -1,7 +1,6 @@
 import { Elysia } from "elysia";
-import { User, UserModel } from "../../Model/User";
-import { Goal, GoalModel } from "../../Model/Goal";
-import { Meal, MealModel } from "../../Model/Meal";
+import { GoalModel } from "../../Model/Goal";
+import { MealModel } from "../../Model/Meal";
 import { jwt } from '@elysiajs/jwt';
 
 const app = new Elysia().use(jwt({
@@ -15,6 +14,14 @@ const dateRange = (date: string) => {
     const end = new Date(date);
     end.setDate(end.getDate() + 1);
     return { start, end };
+}
+
+const dayRange = (date: string) => {
+    const startOfDay = new Date(date);
+    startOfDay.setHours(0, 0, 0, 0);
+    const endOfDay = new Date(date);
+    endOfDay.setHours(23, 59, 59, 999);
+    return { startOfDay, endOfDay };
 }
 
 // get summary by date, use in calendar
@@ -67,9 +74,10 @@ export const getGoals = app.get("/goal/:date", async ({ jwt, cookie: { token }, 
         }
         const user_id = validToken.user_id;
 
+        const { startOfDay, endOfDay } = dayRange(date);
         const goals = await GoalModel.find({
-            start_date: { $lte: new Date(date) },
-            end_date: { $gte: new Date(date) },
+            start_date: { $lte: endOfDay },
+            end_date: { $gte: startOfDay },
             create_by: user_id
         });
         if (!goals || goals.length === 0) {
