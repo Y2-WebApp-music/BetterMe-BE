@@ -42,6 +42,8 @@ export const followUser = app.put("/user/follow", async ({ query }) => {
 
         if (!user_id || !follower_id) {
             return { message: "Missing user_id or follower_id" };
+        } else if (user_id === follower_id) {
+            return { message: "id can't be same" };
         }
 
         const user1 = await UserModel.findById(user_id);
