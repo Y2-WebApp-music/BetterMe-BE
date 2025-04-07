@@ -73,38 +73,56 @@ export const getPostDetail = app.get("/post/:post_id", async ({ params }) => {
 
 
 
-export const getPostFeed = app.get("/post/feed/:id", async ({ params }) => {
+export const getPostFeed = app.get("/post/feed/:id", async ({ params, query }) => {
     try {
         const { id } = params;
+        const { page = 1, limit = 10 } = query; // Default to page 1 and 10 posts per page
 
         const user = await UserModel.findById(id);
         if (!user) {
             return { message: "User not found" };
         }
 
-        const posts = await PostModel.find({ create_by: { $in: user.following } })
-            .populate("create_by", "username profile_img")
-            .sort({ post_date: -1 });
+        const posts = await PostModel.aggregate([
+            {
+                $facet: {
+                    followingUserPosts: [
+                        { $match: { create_by: { $in: user.following } } },
+                        { $sort: { post_date: -1 } },
+                    ],
+                    otherPosts: [
+                        { $match: { create_by: { $nin: user.following } } },
+                        { $sort: { post_date: -1 } },
+                    ],
+                }
+            },
+            {
+                $project: {
+                    posts: { $concatArrays: ["$followingUserPosts", "$otherPosts"] }
+                }
+            },
+            {
+                $unwind: "$posts"
+            },
+            {
+                $skip: (+page - 1) * +limit
+            },
+            {
+                $limit: +limit
+            }
+        ]);
 
-        const posts2 = await PostModel.find({ create_by: { $nin: user.following } })
-            .populate("create_by", "username profile_img")
-            .sort({ post_date: -1 });
-
-        const likePosts = [...posts, ...posts2].filter(post => post.like.includes(id as any));
-        const unlikePosts = [...posts, ...posts2].filter(post => !post.like.includes(id as any));
-
-        const finalPosts = [...unlikePosts, ...likePosts];
-
-        const post_data = finalPosts.map(post => {
-            const likeCount = post.like.length;
-            const commentCount = post.comment.length;
+        const post_data = posts.map((post: any) => {
+            const p = post.posts;
+            const likeCount = p.like?.length || 0;
+            const commentCount = p.comment?.length || 0;
             return {
-                post_id: post._id.toString(),
-                create_by: post.create_by,
-                date: post.post_date,
-                content: post.content,
-                tag: post.tag,
-                image: post.image_url,
+                post_id: p._id.toString(),
+                create_by: p.create_by,
+                date: p.post_date,
+                content: p.content,
+                tag: p.tag,
+                image: p.image_url,
                 like: likeCount,
                 comment: commentCount,
             };
