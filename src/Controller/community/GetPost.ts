@@ -105,6 +105,17 @@ export const getPostFeed = app.get("/post/feed/:id", async ({ params, query }) =
                 $unwind: "$posts"
             },
             {
+                $lookup: {
+                    from: "users",
+                    localField: "posts.create_by",
+                    foreignField: "_id",
+                    as: "populate_create_by"
+                }
+            },
+            {
+                $unwind: "$populate_create_by"
+            },
+            {
                 $skip: (+page - 1) * +limit
             },
             {
@@ -118,7 +129,11 @@ export const getPostFeed = app.get("/post/feed/:id", async ({ params, query }) =
             const commentCount = p.comment?.length || 0;
             return {
                 post_id: p._id.toString(),
-                create_by: p.create_by,
+                create_by: {
+                    _id: post.populate_create_by._id.toString(),
+                    username: post.populate_create_by.username,
+                    profile_img: post.populate_create_by.profile_img
+                },
                 date: p.post_date,
                 content: p.content,
                 tag: p.tag,
